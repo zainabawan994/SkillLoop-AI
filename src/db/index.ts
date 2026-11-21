@@ -11,9 +11,14 @@ declare global {
 
 export const createPool = () => {
   if (!global._postgresPool) {
-    // Railway/Render Postgres provide DATABASE_URL; fall back to discrete SQL_* vars.
-    const connection = process.env.DATABASE_URL
-      ? { connectionString: process.env.DATABASE_URL }
+    // Railway/Neon provide DATABASE_URL (Vercel may prefix it, e.g. STORAGE_DATABASE_URL); else SQL_* vars.
+    const url =
+      process.env.DATABASE_URL ||
+      process.env.POSTGRES_URL ||
+      Object.entries(process.env).find(([k, v]) => /(DATABASE|POSTGRES)_URL$/.test(k) && v)?.[1];
+    if (!url && !process.env.SQL_HOST) console.error("No DATABASE_URL set: database calls will fail.");
+    const connection = url
+      ? { connectionString: url }
       : {
           host: process.env.SQL_HOST,
           port: Number(process.env.SQL_PORT) || 5432,

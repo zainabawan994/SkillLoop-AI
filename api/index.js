@@ -520,7 +520,9 @@ var userWorkspacesRelations = relations(userWorkspaces, ({ one }) => ({
 dotenv.config();
 var createPool = () => {
   if (!global._postgresPool) {
-    const connection = process.env.DATABASE_URL ? { connectionString: process.env.DATABASE_URL } : {
+    const url = process.env.DATABASE_URL || process.env.POSTGRES_URL || Object.entries(process.env).find(([k, v]) => /(DATABASE|POSTGRES)_URL$/.test(k) && v)?.[1];
+    if (!url && !process.env.SQL_HOST) console.error("No DATABASE_URL set: database calls will fail.");
+    const connection = url ? { connectionString: url } : {
       host: process.env.SQL_HOST,
       port: Number(process.env.SQL_PORT) || 5432,
       user: process.env.SQL_USER,
@@ -1277,7 +1279,7 @@ async function startServer() {
         provider: delivery.provider
       });
     } catch (error) {
-      const msg = error instanceof Error ? error.message : "Signup failed.";
+      const msg = error instanceof Error && (error.message || error.code) || "Signup failed (database unreachable - check DATABASE_URL).";
       return res.status(500).json({ error: msg });
     }
   });
@@ -1372,7 +1374,7 @@ async function startServer() {
       const token = signSessionToken(safeUser);
       return res.status(201).json({ token, user: safeUser });
     } catch (error) {
-      const msg = error instanceof Error ? error.message : "Signup failed.";
+      const msg = error instanceof Error && (error.message || error.code) || "Signup failed (database unreachable - check DATABASE_URL).";
       return res.status(500).json({ error: msg });
     }
   });

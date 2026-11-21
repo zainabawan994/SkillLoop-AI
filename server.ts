@@ -301,7 +301,10 @@ export async function startServer() {
         provider: delivery.provider,
       });
     } catch (error) {
-      const msg = error instanceof Error ? error.message : "Signup failed.";
+      // pg connection failures can have an empty message (AggregateError); fall back to the code.
+      const msg =
+        (error instanceof Error && (error.message || (error as NodeJS.ErrnoException).code)) ||
+        "Signup failed (database unreachable - check DATABASE_URL).";
       return res.status(500).json({ error: msg });
     }
   });
@@ -428,7 +431,10 @@ export async function startServer() {
       const token = signSessionToken(safeUser);
       return res.status(201).json({ token, user: safeUser });
     } catch (error) {
-      const msg = error instanceof Error ? error.message : "Signup failed.";
+      // pg connection failures can have an empty message (AggregateError); fall back to the code.
+      const msg =
+        (error instanceof Error && (error.message || (error as NodeJS.ErrnoException).code)) ||
+        "Signup failed (database unreachable - check DATABASE_URL).";
       return res.status(500).json({ error: msg });
     }
   });
