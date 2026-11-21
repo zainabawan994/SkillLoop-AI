@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-family: "Plus Jakarta Sans", "Noto Sans Arabic", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+
+  html.larger-text {
+    font-size: 18.5px;
+  }
+
+  code, pre, .font-mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* High Contrast Accessibility Mode */
+html.high-contrast body {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+html.high-contrast .hc-canvas {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.high-contrast .hc-card {
+  background-color: #ffffff !important;
+  border: 2px solid #0f172a !important;
+  box-shadow: none !important;
+  color: #000000 !important;
+}
+
+html.high-contrast .hc-muted {
+  color: #1e293b !important;
+}
+
+html.high-contrast .hc-sidebar {
+  background-color: #020617 !important;
+  border-inline-end: 2px solid #ffffff !important;
+}
+
+html.high-contrast .hc-btn-primary {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  border: 2px solid #000000 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

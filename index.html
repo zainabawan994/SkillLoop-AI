@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          window.addEventListener(
+            "error",
+            function (e) {
+              if (
+                e &&
+                typeof e.filename === "string" &&
+                e.filename.indexOf("chrome-extension://") === 0 &&
+                typeof e.message === "string" &&
+                e.message.indexOf("Cannot set property fetch") !== -1
+              ) {
+                e.preventDefault();
+              }
+            },
+            true
+          );
+          var desc = Object.getOwnPropertyDescriptor(window, "fetch");
+          if (desc && desc.configurable && desc.get && !desc.set) {
+            var origGet = desc.get;
+            var overrideFetch = null;
+            Object.defineProperty(window, "fetch", {
+              configurable: true,
+              enumerable: desc.enumerable,
+              get: function () {
+                return overrideFetch || origGet.call(this);
+              },
+              set: function (val) {
+                overrideFetch = val;
+              },
+            });
+          } else if (!desc) {
+            var proto = Object.getPrototypeOf(window);
+            var protoDesc = proto && Object.getOwnPropertyDescriptor(proto, "fetch");
+            if (protoDesc && protoDesc.get && !protoDesc.set && typeof window.fetch === "function") {
+              var boundFetch = window.fetch.bind(window);
+              Object.defineProperty(window, "fetch", {
+                configurable: true,
+                enumerable: true,
+                writable: true,
+                value: boundFetch,
+              });
+            }
+          }
+        } catch (_err) {}
+      })();
+    </script>
+    <title>SkillLoop AI – Adaptive Learning &amp; Mastery Platform</title>
+    <meta
+      name="description"
+      content="Master programming in 10–30 minute daily sessions with adaptive study plans, zero-penalty catch-up, and conceptual AI feedback."
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://skillloop.ai/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SkillLoop AI" />
+    <meta property="og:title" content="SkillLoop AI – Adaptive Learning &amp; Mastery Platform" />
+    <meta
+      property="og:description"
+      content="Master programming in 10–30 minute daily sessions with adaptive study plans, zero-penalty catch-up, and conceptual AI feedback."
+    />
+    <meta property="og:url" content="https://skillloop.ai/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SkillLoop AI – Adaptive Learning &amp; Mastery Platform" />
+    <meta
+      name="twitter:description"
+      content="Master programming in 10–30 minute daily sessions with adaptive study plans, zero-penalty catch-up, and conceptual AI feedback."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "name": "SkillLoop AI",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "All",
+            "description": "AI-powered adaptive learning and mastery platform designed for working adult learners with irregular schedules.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          },
+          {
+            "@type": "EducationalOrganization",
+            "name": "SkillLoop AI",
+            "description": "Adaptive coding education platform offering 10–30 minute study plans, conceptual AI feedback, and cohort analytics."
+          }
+        ]
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-[#F4F7FE] text-slate-900 antialiased">
+    <div id="root">
+      <div class="mx-auto max-w-4xl px-6 py-12 space-y-6">
+        <header class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+          <a href="/" class="text-lg font-extrabold text-slate-900">SkillLoop AI</a>
+          <nav aria-label="Primary sections" class="flex flex-wrap gap-4 text-sm font-semibold text-indigo-700">
+            <a href="/login">Sign In</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/courses">Courses</a>
+            <a href="/practice">Smart Practice</a>
+            <a href="/planner">Study Planner</a>
+            <a href="/educator">Educator Portal</a>
+          </nav>
+        </header>
+        <main class="space-y-4">
+          <h1 class="text-3xl font-extrabold text-slate-900">
+            Adaptive learning built for busy schedules.
+          </h1>
+          <p class="text-base text-slate-600">
+            SkillLoop AI helps working adult learners master Python, Data Science, and Web Development through 10–30 minute study sessions, zero-penalty inactivity recovery, and step-by-step conceptual AI feedback.
+          </p>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
