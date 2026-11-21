@@ -9,7 +9,6 @@ import {
   Lock,
   Mail,
   RefreshCw,
-  ShieldCheck,
   User,
   UserCheck,
   Users,
@@ -528,12 +527,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthenticated }) => {
                       <label className="mb-1.5 block text-xs font-semibold text-slate-700">
                         Select Role
                       </label>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-2 gap-2">
                         {(
                           [
                             { id: "learner", label: "Learner", icon: UserCheck },
                             { id: "educator", label: "Educator", icon: Users },
-                            { id: "admin", label: "Admin", icon: ShieldCheck },
                           ] as const
                         ).map(({ id, label, icon: Icon }) => (
                           <button
@@ -600,14 +598,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthenticated }) => {
                         className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-700 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700 transition-colors"
                       >
                         Educator
-                      </button>
-                      <button
-                        type="button"
-                        disabled={submitting}
-                        onClick={() => handleDemoLogin("admin")}
-                        className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 font-semibold text-slate-700 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700 transition-colors"
-                      >
-                        Admin
                       </button>
                     </div>
                   </div>

@@ -128011,7 +128011,7 @@ async function startServer() {
     if (cleanPass.length < 6) {
       return res.status(400).json({ error: "Password must be at least 6 characters long." });
     }
-    const validRole = role === "educator" || role === "admin" ? role : "learner";
+    const validRole = role === "educator" ? "educator" : "learner";
     try {
       const existingUser = await findUserByEmail(cleanEmail);
       if (existingUser) {
@@ -128135,7 +128135,7 @@ async function startServer() {
     if (cleanPass.length < 6) {
       return res.status(400).json({ error: "Password must be at least 6 characters long." });
     }
-    const validRole = role === "educator" || role === "admin" ? role : "learner";
+    const validRole = role === "educator" ? "educator" : "learner";
     try {
       if (await findUserByEmail(cleanEmail)) {
         return res.status(409).json({

@@ -242,8 +242,8 @@ export async function startServer() {
         .json({ error: "Password must be at least 6 characters long." });
     }
 
-    const validRole: Role =
-      role === "educator" || role === "admin" ? role : "learner";
+    // Public signup can't self-assign admin.
+    const validRole: Role = role === "educator" ? "educator" : "learner";
 
     try {
       const existingUser = await findUserByEmail(cleanEmail);
@@ -410,8 +410,8 @@ export async function startServer() {
         .json({ error: "Password must be at least 6 characters long." });
     }
 
-    const validRole: Role =
-      role === "educator" || role === "admin" ? role : "learner";
+    // Public signup can't self-assign admin.
+    const validRole: Role = role === "educator" ? "educator" : "learner";
 
     try {
       if (await findUserByEmail(cleanEmail)) {
