@@ -166,10 +166,10 @@ function parseGeminiJson<T>(rawText: string | undefined, fallback: T): T {
   return JSON.parse(cleaned) as T;
 }
 
-async function startServer() {
+export async function startServer() {
   // Create tables on a fresh database (e.g. new Railway Postgres); no-op once applied.
   try {
-    await migrate(db, { migrationsFolder: path.resolve(__dirname, "drizzle") });
+    await migrate(db, { migrationsFolder: process.env.VERCEL ? path.join(process.cwd(), "drizzle") : path.resolve(__dirname, "drizzle") });
   } catch (err) {
     console.error("Database migration failed:", (err as Error)?.message || err);
   }
@@ -893,6 +893,9 @@ ${notes}`;
     return res.status(404).json({ error: "API endpoint not found." });
   });
 
+  // On Vercel the static build is served by the CDN; the function only handles /api.
+  if (process.env.VERCEL) return app;
+
   // Vite middleware in dev, static dist in production
   if (process.env.NODE_ENV !== "production") {
     const { createServer: createViteServer } = await import("vite");
@@ -914,4 +917,4 @@ ${notes}`;
   });
 }
 
-startServer();
+if (!process.env.VERCEL) startServer();
