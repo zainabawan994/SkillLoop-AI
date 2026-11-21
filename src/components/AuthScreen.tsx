@@ -198,21 +198,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthenticated }) => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    if (submitting) return;
-    setError(null);
-    setSubmitting(true);
-    try {
-      const res = await AuthRepo.loginWithGoogle();
-      if (res.error || !res.user) {
-        setError(res.error || "Google sign-in failed.");
-        return;
-      }
-      onAuthenticated(res.user);
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 lg:flex-row">
@@ -595,41 +580,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthenticated }) => {
                     )}
                   </button>
                 </form>
-
-                <div className="relative flex items-center py-1">
-                  <div className="flex-grow border-t border-slate-200" />
-                  <span className="mx-3 shrink-0 text-xs text-slate-400">
-                    or
-                  </span>
-                  <div className="flex-grow border-t border-slate-200" />
-                </div>
-
-                <button
-                  type="button"
-                  disabled={submitting}
-                  onClick={handleGoogleSignIn}
-                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60"
-                >
-                  <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      fill="#4285F4"
-                      d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M12 24c3.3 0 6.08-1.09 8.11-2.96l-3.88-3.05c-1.09.73-2.48 1.16-4.23 1.16-3.25 0-6-2.2-6.98-5.15H1.01v3.14C3.03 21.15 7.21 24 12 24z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M5.02 14c-.25-.73-.39-1.52-.39-2.34s.14-1.61.39-2.34V6.18H1.01C.37 7.45 0 8.88 0 11.66s.37 4.21 1.01 5.48L5.02 14z"
-                    />
-                    <path
-                      fill="#EA4335"
-                      d="M12 4.65c1.8 0 3.41.62 4.68 1.83l3.51-3.51C18.07 1.19 15.3 0 12 0 7.21 0 3.03 2.85 1.01 6.84l4.01 3.14C6 6.85 8.75 4.65 12 4.65z"
-                    />
-                  </svg>
-                  <span>Continue with Google</span>
-                </button>
 
                 {mode === "login" && (
                   <div className="flex flex-wrap items-center justify-between border-t border-slate-100 pt-4 text-xs text-slate-500 gap-2">
